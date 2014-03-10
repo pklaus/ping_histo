@@ -31,7 +31,7 @@ to display the data.
 You can check [this question on Stackoverflow](http://stackoverflow.com/q/6949332/183995)
 for ideas of what tools to use.
 
-### Usage with `histogram.py`
+#### Using together with `histogram.py`
 
 This tool may be used together with `histogram.py`
 from [data-hacks](https://github.com/bitly/data_hacks):
