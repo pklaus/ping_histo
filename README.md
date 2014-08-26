@@ -34,7 +34,8 @@ for ideas of what tools to use.
 #### Using together with `histogram.py`
 
 This tool may be used together with `histogram.py`
-from [data-hacks](https://github.com/bitly/data_hacks):
+from [data-hacks](https://github.com/bitly/data_hacks)
+(install using `pip install data_hacks`):
 
     ./ping_histo.py 192.168.1.1 -c 50 | histogram.py
 
