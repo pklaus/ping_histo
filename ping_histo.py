@@ -34,27 +34,30 @@ def main():
         stderr = subprocess.STDOUT
     )
 
-    times = []
-    sentinel = b"" if sys.version_info[0] >= 3 else ""
-    for line in iter(ping.stdout.readline, sentinel):
+    try:
+        times = []
+        sentinel = b"" if sys.version_info[0] >= 3 else ""
+        for line in iter(ping.stdout.readline, sentinel):
 
-        line = line.decode('ascii')
-        if args.debug: print("Analyzing line: " + line)
-        if line == u"\n": continue
-        line = line.replace('\n', '')
+            line = line.decode('ascii')
+            if args.debug: print("Analyzing line: " + line)
+            if line == u"\n": continue
+            line = line.replace('\n', '')
 
-        match = single_matcher.match(line)
-        if match:
-            if args.debug: print(match.groups())
-            time = float(match.group('time'))
-            times.append(time)
-            print(time)
-            continue
-        match = end_matcher.match(line)
-        if match:
-            if args.debug: print(match.groups())
-            continue
-        if args.debug: print("Didn't understand this line: " + line)
+            match = single_matcher.match(line)
+            if match:
+                if args.debug: print(match.groups())
+                time = float(match.group('time'))
+                times.append(time)
+                print(time)
+                continue
+            match = end_matcher.match(line)
+            if match:
+                if args.debug: print(match.groups())
+                continue
+            if args.debug: print("Didn't understand this line: " + line)
+    except KeyboardInterrupt:
+        sys.exit()
 
     exitCode = ping.returncode
     if args.debug: print("Exit Code of the ping command: " + str(ping.returncode))
