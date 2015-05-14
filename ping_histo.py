@@ -40,17 +40,17 @@ def main():
         for line in iter(ping.stdout.readline, sentinel):
             line = line.decode('ascii').strip()
             if not line: continue
-            if args.debug: print("Analyzing line: " + line)
+            if args.debug: print("Analyzing this line: " + line)
             match = single_matcher.match(line)
             if match:
-                if args.debug: print(match.groups())
+                if args.debug: print("Matches found: {}".format(match.groups()))
                 time = float(match.group('time'))
                 times.append(time)
                 print(time)
                 continue
             match = end_matcher.match(line)
             if match:
-                if args.debug: print(match.groups())
+                if args.debug: print("Matches found: {}".format(match.groups()))
                 continue
             if args.debug: print("Didn't understand this line: " + line)
     except KeyboardInterrupt:
