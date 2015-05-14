@@ -38,12 +38,9 @@ def main():
         times = []
         sentinel = b"" if sys.version_info[0] >= 3 else ""
         for line in iter(ping.stdout.readline, sentinel):
-
-            line = line.decode('ascii')
+            line = line.decode('ascii').strip()
+            if not line: continue
             if args.debug: print("Analyzing line: " + line)
-            if line == u"\n": continue
-            line = line.replace('\n', '')
-
             match = single_matcher.match(line)
             if match:
                 if args.debug: print(match.groups())
