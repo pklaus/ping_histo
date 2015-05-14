@@ -5,11 +5,6 @@ import subprocess
 import re
 import sys
 
-def mean(values):
-    # starting with Python 3.4 there is the module statistics
-    # http://docs.python.org/3.4/library/statistics.html
-    return float(sum(values))/len(values) if len(values) > 0 else float('nan')
-
 single_matcher = re.compile("(?P<bytes>\d+) bytes from (?P<IP>\d+.\d+.\d+.\d+): icmp_seq=(?P<sequence>\d+) ttl=(?P<ttl>\d+) time=(?P<time>\d+(.\d+)?) ms")
 # should match lines like this:
 # 64 bytes from 192.168.178.45: icmp_seq=2 ttl=64 time=103 ms
@@ -58,8 +53,6 @@ def main():
 
     exitCode = ping.returncode
     if args.debug: print("Exit Code of the ping command: " + str(ping.returncode))
-
-    #print(mean(times))
 
 if __name__ == "__main__":
     main()
