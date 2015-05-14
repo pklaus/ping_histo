@@ -51,8 +51,8 @@ def main():
     except KeyboardInterrupt:
         sys.exit()
 
-    exitCode = ping.returncode
     if args.debug: print("Exit Code of the ping command: " + str(ping.returncode))
+    sys.exit(ping.returncode)
 
 if __name__ == "__main__":
     main()
