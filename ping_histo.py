@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import subprocess, re, sys
+import subprocess, re, sys, logging
+
+logger = logging.getLogger(__name__)
 
 single_matcher = re.compile("(?P<bytes>\d+) bytes from (?P<IP>\d+.\d+.\d+.\d+): icmp_seq=(?P<sequence>\d+) ttl=(?P<ttl>\d+) time=(?P<time>\d+(.\d+)?) ms")
 # should match lines like this:
@@ -24,10 +26,10 @@ def ping(host=None, count=4, interval=1.0, debug=False):
     for line in iter(ping.stdout.readline, sentinel):
         line = line.decode('ascii').strip()
         if not line: continue
-        if debug: print("Analyzing this line: " + line)
+        if debug: logger.debug("Analyzing this line: " + line)
         match = single_matcher.match(line)
         if match:
-            if debug: print("Matches found: {}".format(match.groups()))
+            if debug: logger.debug("Matches found: {}".format(match.groups()))
             time = float(match.group('time'))
             times.append(time)
             print(time)
@@ -35,9 +37,9 @@ def ping(host=None, count=4, interval=1.0, debug=False):
             continue
         match = end_matcher.match(line)
         if match:
-            if debug: print("Matches found: {}".format(match.groups()))
+            if debug: logger.debug("Matches found: {}".format(match.groups()))
             continue
-        if debug: print("Didn't understand this line: " + line)
+        if debug: logger.debug("Didn't understand this line: " + line)
 
 def main():
     import argparse
@@ -48,12 +50,14 @@ def main():
     parser.add_argument('--debug', '-d', action='store_true', help='Enable debug output for this script')
     args = parser.parse_args()
 
+    if args.debug: logging.basicConfig(format='%(levelname)s:%(message)s', level='DEBUG')
+
     try:
         ping(host=args.host, count=args.count, interval=args.interval, debug=args.debug)
     except KeyboardInterrupt:
         sys.exit()
 
-    if args.debug: print("Exit Code of the ping command: " + str(ping.returncode))
+    if args.debug: logger.debug("Exit Code of the ping command: " + str(ping.returncode))
 
     sys.exit(ping.returncode)
 
